@@ -28,8 +28,8 @@ class series:
 
     def xtix(self, mins):
         '''
-        переводит кадры во время и создаем переменные для
-        подписи оси Х
+        translates frames into time (min) and create ticks
+        for X-axis
         '''
         coef = 1/60/self.fps
         fame_in_min = int(mins/coef)
@@ -39,7 +39,7 @@ class series:
 
     def fig_init(self, dpi, figsize, X, Y, mins):
         '''
-        создает объект фигуры для построения графика
+        creates figure object with given properties
         '''
         fig = plt.figure(figsize=figsize, dpi=dpi)
         plt.xlim([0,len(self.x())]) #plt.xlim([0,len(self.x())])
@@ -51,8 +51,8 @@ class series:
 
     def lines(self):
         '''
-        создает список списков по каждому ROI в серии,
-        можно строить из них отдельные линии
+        creates list of lists with Y values 
+        of each selected ROI
         '''
         listik = []
         res = pd.read_csv(self.path)
@@ -68,7 +68,7 @@ class series:
 
     def mean(self):
         '''
-        Считает среднее по всем ROI в серии
+        calculates average values for all ROIs
         '''
         res = pd.read_csv(self.path)
         vals = []
@@ -82,15 +82,15 @@ class series:
 
     def x(self):
         '''
-        Считает X (количество точек/кадров) для построения графиков
+        just returns the number of points for graph creation
         '''
         res = pd.read_csv(self.path)
         return np.array(list(range(0,len(res))))
 
     def std(self):
         '''
-        Считает стандартное отклонение для построения
-        красивого графика с error
+        std calculation for plot graph 
+        with errorfill
         '''
         res = pd.read_csv(self.path)
         vals = []
@@ -104,24 +104,24 @@ class series:
 
     def plot(self, mins=2, dpi=100, figsize=(6, 4), X='X', Y='Y'):
         '''
-        Строит простой график среднего
+        plots mean for all ROIs 
         '''
         self.fig_init(dpi, figsize, X, Y, mins)
         plt.plot(self.x(), self.mean(), lw=2, color='#83A83B')
 
     def plot_errorfill(self, mins=2, dpi=100, figsize=(6, 4), X='X', Y='Y'):
         '''
-        Строит красивый график среднего с std
+        plots errorfill graph
         '''
         self.fig_init(dpi, figsize, X, Y, mins)
         errorfill(self.x(), self.mean(), self.std(), color='#83A83B', alpha_fill=0.25)
 
     def animate(self, path, mins=2, dpi=100, figsize=(6, 4), X='X', Y='Y'):
         '''
-        Анимация графика серии, рендер каждого кадра, сохранение
-        всех кадров в отдельную указанную папку, создание текстового
-        файла с путями ко всем кадрам для дальнейшего создания
-        анимации в imageJ -> import -> stack from list...
+        Animates graph, renders each frame, 
+        save all frames to a separate specified folder, 
+        create a text file with paths to all frames for 
+        further animation creation in imageJ -> import -> stack from list ...
         '''
         self.fig_init(dpi, figsize, X, Y, mins)
 

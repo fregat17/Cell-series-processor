@@ -9,6 +9,9 @@ import matplotlib.colors as col
 import matplotlib.patheffects as pe
 
 def errorfill(x, y, yerr, color=None, alpha_fill=0.3, ax=None):
+    '''
+    beautiful plot of mean with std
+    '''
     ax = ax if ax is not None else plt.gca()
     if color is None:
         color = ax._get_lines.color_cycle.next()
@@ -19,6 +22,15 @@ def errorfill(x, y, yerr, color=None, alpha_fill=0.3, ax=None):
         ymin, ymax = yerr
     ax.plot(x, y, color=color)
     ax.fill_between(x, ymax, ymin, color=color, alpha=alpha_fill)
+
+def channeler(csv, channels, save_path):
+    '''
+    split Result from ImageJ multimeasure from multichannel series
+    in separate dataFrames and save
+    '''
+    df=pd.read_csv(csv)
+    for i in range(0, channels):
+        df[i::channels].to_csv(path_or_buf=save_path+f"{i+1}.csv")
 
 class series:
     def __init__(self, path, fps):

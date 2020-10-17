@@ -109,6 +109,14 @@ class series:
         self.fig_init(dpi, figsize, X, Y, mins)
         plt.plot(self.x(), self.mean(), lw=2, color='#83A83B')
 
+    def plot_lines(self, mins=2, dpi=100, figsize=(6, 4), X='X', Y='Y'):
+        '''
+        plots lines of all ROIs 
+        '''
+        self.fig_init(dpi, figsize, X, Y, mins)
+        for i in self.lines():
+            plt.plot(self.x(), i, lw=2, color='#83A83B')
+
     def plot_errorfill(self, mins=2, dpi=100, figsize=(6, 4), X='X', Y='Y'):
         '''
         plots errorfill graph
@@ -134,6 +142,6 @@ class series:
                         bbox_inches = 'tight', pad_inches = 0.2)
 
 
-        files = sorted(glob.glob(os.path.join(path, '*.png')))
+        files = sorted(glob(os.path.join(path, '*.png')))
         with open(path + '\\' + self.name + '.txt', 'w') as in_files:
             in_files.writelines(fn + '\n' for fn in files)
